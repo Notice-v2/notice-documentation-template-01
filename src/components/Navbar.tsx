@@ -25,11 +25,13 @@ export const Navbar = ({ meta }: Props) => {
 			as="nav"
 			align="center"
 			w="100%"
-			px={{ base: 2, lg: 4 }}
 			py={{ base: 4, lg: 8 }}
 			minH="64px"
 			bg={'transparent'}
 			color="white"
+			maxW="1118px"
+			mx="auto"
+			px={{ base: '20px', md: '34px', lg: '52px' }}
 		>
 			<Flex as={Link} href="/" gap={4} align="center" justify="start">
 				{icon && <Logo src={icon} />}

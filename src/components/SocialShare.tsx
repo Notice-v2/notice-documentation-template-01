@@ -1,7 +1,7 @@
 'use client'
 
 import { FacebookIcon, LinkCopyIcon, LinkedinIcon, TwitterIcon } from '@/icons'
-import { HStack, IconButton, Text, VStack, useClipboard, useToast } from '@chakra-ui/react'
+import { HStack, IconButton, VStack, useClipboard, useToast } from '@chakra-ui/react'
 
 interface Props {
 	marginTop?: string
@@ -69,9 +69,6 @@ export const SocialShare = ({ marginTop }: Props) => {
 
 	return (
 		<VStack align="flex-start" justify="center" mb={'8px'} mt={marginTop ?? '8px'} w="100%" spacing={1}>
-			<Text color="gray.600" fontSize="xs">
-				SHARE THIS POST
-			</Text>
 			<HStack spacing={0} justify="center" align="start">
 				<IconButton
 					variant="ghost"

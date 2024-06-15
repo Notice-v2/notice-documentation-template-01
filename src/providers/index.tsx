@@ -1,4 +1,3 @@
-import { SelectedTagProvider } from './selectedTagProvider'
 import { StylesProvider } from './stylesProvider'
 
 interface Props {
@@ -6,9 +5,5 @@ interface Props {
 }
 
 export const Providers = ({ children }: Props) => {
-	return (
-		<StylesProvider>
-			<SelectedTagProvider> {children}</SelectedTagProvider>
-		</StylesProvider>
-	)
+	return <StylesProvider> {children}</StylesProvider>
 }

@@ -1,9 +1,9 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Articles } from './Articles'
 import { Hero } from './Hero'
-import { Navbar } from './Navbar'
 
 interface Props {
 	data: any
@@ -11,9 +11,19 @@ interface Props {
 
 export const HomeComponents = ({ data }: Props) => {
 	const hasHero = data?.project?.subtitle || data?.project?.description
+
+	const searchParams = useSearchParams()
+	const pathname = usePathname()
+	const { replace } = useRouter()
+
+	const setSearchParams = (s: string) => {
+		const params = new URLSearchParams(searchParams)
+		params.set('category', s)
+		replace(`${pathname}?${params.toString()}`)
+	}
+
 	return (
 		<Box mx="auto" maxW="1118px" px={{ base: '20px', md: '34px', lg: '52px' }}>
-			<Navbar meta={data?.metadata ?? []} />
 			{hasHero && (
 				<Box as="section">
 					<Hero project={data?.project} />

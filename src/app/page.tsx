@@ -6,10 +6,12 @@ import { headers } from 'next/headers'
 
 async function getData(searchParams?: Record<string, any>) {
 	const projectId = extractProjectID(headers(), searchParams)
+	const getCategory = searchParams?.category ? `?category=${searchParams?.category}` : ''
+
 	if (!projectId) return null
 
 	try {
-		const { data } = await API.get(`/projects/${projectId}`)
+		const { data } = await API.get(`/projects/${projectId}${getCategory}`)
 		return data
 	} catch (_) {
 		return null
