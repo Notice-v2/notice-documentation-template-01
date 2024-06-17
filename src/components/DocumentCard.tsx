@@ -13,9 +13,10 @@ dayjs.extend(relativeTime)
 interface Props {
 	page: any
 	accentColor?: string
+	hasShadow?: boolean
 }
 
-export const DocumentCard = ({ page, accentColor }: Props) => {
+export const DocumentCard = ({ page, hasShadow }: Props) => {
 	const postDate = dayjs(page?.createdAt)
 	const sinceDate = postDate.fromNow()
 
@@ -31,13 +32,14 @@ export const DocumentCard = ({ page, accentColor }: Props) => {
 			_hover={{ textDecoration: 'none' }}
 		>
 			<Flex
-				bg="white"
+				bg={'white'}
 				direction="column"
 				gap="20px"
 				h="100%"
 				justify="center"
 				align="flex-start"
 				p={{ base: '24px', md: '28px', lg: '30px' }}
+				boxShadow={hasShadow ? 'rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;' : 'none'}
 			>
 				<Heading
 					as="h2"

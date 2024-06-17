@@ -1,9 +1,12 @@
 'use client'
 
-import { Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Link } from '@chakra-ui/next-js'
+import { Box, Button, Flex, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
+import { NarrowArrowLeftIcon } from '../icons'
 import { PageContent } from './blocks/render-blocks'
+import { DocumentCard } from './DocumentCard'
 import { SocialShare } from './SocialShare'
 
 interface Props {
@@ -11,7 +14,8 @@ interface Props {
 }
 
 export const SubPageComponents = ({ data }: Props) => {
-	const formattedDate = useMemo(() => dayjs(data?.createdAt).format('MMM D, YYYY'), [data?.createdAt])
+	const { page, relatedPages } = data || {}
+	const formattedDate = useMemo(() => dayjs(page?.createdAt).format('MMM D, YYYY'), [page?.createdAt])
 
 	function removeFirstElement(arr: any[]) {
 		const newArr = arr.slice()
@@ -19,7 +23,8 @@ export const SubPageComponents = ({ data }: Props) => {
 		return newArr
 	}
 
-	const filteredContent = useMemo(() => removeFirstElement(data?.content ?? []), [data])
+	const filteredContent = useMemo(() => removeFirstElement(page?.content ?? []), [page])
+	const homeHref = process.env.NODE_ENV === 'production' ? '/' : `/?target=${page?.projectId}`
 
 	return (
 		<Box>
@@ -33,18 +38,32 @@ export const SubPageComponents = ({ data }: Props) => {
 			>
 				<VStack py={{ base: '4', lg: 6 }} justify="center" align="flex-start" w="100%">
 					<Flex maxW="700px" justify="center" align="flex-start" direction="column" w="100%" h="fit-content">
+						<Button
+							size="xs"
+							variant={'outline'}
+							as={Link}
+							href={homeHref} // React router state holds the previous query param value inside the home
+							leftIcon={<NarrowArrowLeftIcon size={16} color="black" />}
+							iconSpacing={2}
+							colorScheme="gray"
+							my={2}
+							fontWeight={500}
+							_hover={{ textDecoration: 'none' }}
+						>
+							All Articles
+						</Button>
 						<Heading
 							as="h1"
 							color="gray.600"
-							fontSize={{ base: '2xl', md: '4xl', lg: '6xl' }}
+							fontSize={{ base: '4xl', md: '4xl', lg: '6xl' }}
 							fontWeight="400"
 							lineHeight="1.2"
 							mb="20px"
 						>
-							{data?.title}
+							{page?.title}
 						</Heading>
 						<Text fontSize={{ base: 'md', md: 'lg', lg: 'xl' }} color="gray.500" mb="4">
-							{data?.description}
+							{page?.description}
 						</Text>
 						<HStack my="8px" justify="flex-start" align="center" gap="18px" w="100%">
 							<Text flexShrink={0} w="fit-content" fontSize={{ base: 'sm', md: 'md', lg: 'lg' }} color="fg.muted">
@@ -63,6 +82,18 @@ export const SubPageComponents = ({ data }: Props) => {
 					fontSize={{ base: '16px', md: '18px' }}
 				>
 					<PageContent blocks={filteredContent} />
+					{relatedPages.length > 0 && (
+						<Box w="100%" my="52px" as="section">
+							<Heading as="h2" fontSize="2xl" fontWeight="700" lineHeight="1.2" mb="24px" color="gray.600">
+								Related Articles
+							</Heading>
+							<SimpleGrid columns={{ base: 1, sm: 2 }} spacing={8}>
+								{relatedPages?.map((page: any) => (
+									<DocumentCard key={page._id} page={page} hasShadow accentColor={data?.project?.accentColor} />
+								))}
+							</SimpleGrid>
+						</Box>
+					)}
 				</Box>
 			</Box>
 		</Box>

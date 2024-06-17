@@ -6,8 +6,28 @@ import { Metadata } from 'next'
 async function getData(slug: string) {
 	try {
 		const { data } = await API.get(`/pages/${slug}`)
-		return data
+		let relatedPages = []
+		const { projectId, category, _id } = data
+		if (category && category !== '') {
+			const projectData = await getPagesWithCategory(projectId, category)
+			const filteredData = projectData.pages.filter((page: any) => page._id !== _id)
+			relatedPages = filteredData
+		}
+		return { page: data, relatedPages }
 	} catch (ex) {
+		return null
+	}
+}
+
+async function getPagesWithCategory(projectId: string, category: string) {
+	const getCategory = `?category=${category}`
+
+	if (!projectId) return null
+
+	try {
+		const { data } = await API.get(`/projects/${projectId}${getCategory}`)
+		return data
+	} catch (_) {
 		return null
 	}
 }
@@ -80,8 +100,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function Subpage({ params }: { params: { slug: string } }) {
 	const data = await getData(params.slug)
+	const { page } = data || {}
 
-	if (!data) return <NotFound />
+	if (!page) return <NotFound />
 
 	return <SubPageComponents data={data} />
 }
