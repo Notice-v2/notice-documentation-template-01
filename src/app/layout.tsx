@@ -1,8 +1,9 @@
-import { CreatedWithNotice } from '@/components/CreatedWithNotice'
+import { Navbar } from '@/components/Navbar'
+import { NoticeLabel } from '@/components/NoticeLabel'
+import { Providers } from '@/providers'
+import { API, extractProjectID } from '@/tools/api'
+import '@notice-org/renderer-helper/dist/style.css'
 import { headers } from 'next/headers'
-import { Navbar } from '../components/Navbar'
-import { Providers } from '../providers'
-import { API, extractProjectID } from '../tools/api'
 
 export default async function RootLayout({
 	children,
@@ -18,7 +19,7 @@ export default async function RootLayout({
 				<Providers>
 					<Navbar meta={projectData?.metadata} />
 					{children}
-					<CreatedWithNotice shouldHide={hideCreatedWithNotice} />
+					<NoticeLabel shouldHide={hideCreatedWithNotice} />
 				</Providers>
 			</body>
 		</html>

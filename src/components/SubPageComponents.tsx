@@ -1,13 +1,12 @@
 'use client'
 
+import { NarrowArrowLeftIcon } from '@/icons'
 import { Link } from '@chakra-ui/next-js'
 import { Box, Button, Flex, Heading, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react'
+import { PageContent, SocialShare } from '@notice-org/renderer-helper'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
-import { NarrowArrowLeftIcon } from '../icons'
-import { PageContent } from './blocks/render-blocks'
 import { DocumentCard } from './DocumentCard'
-import { SocialShare } from './SocialShare'
 
 interface Props {
 	data: any
