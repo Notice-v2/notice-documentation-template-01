@@ -1,13 +1,12 @@
 'use client'
 
-import { useIsHovered } from '@/hooks'
 import { NarrowArrowRightIcon } from '@/icons'
 import { Link } from '@chakra-ui/next-js'
 import { Box, Flex, Heading, HStack, Text } from '@chakra-ui/react'
+import { useIsHovered } from '@notice-org/renderer-helper'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useRef } from 'react'
-
 dayjs.extend(relativeTime)
 
 interface Props {
