@@ -1,9 +1,10 @@
+import { CustomCodeInjector } from '@/components/CustomCodeInjector'
 import { Navbar } from '@/components/Navbar'
 import { NoticeLabel } from '@/components/NoticeLabel'
 import { Providers } from '@/providers'
 import { API, extractProjectID } from '@/tools/api'
-import '@notice-org/renderer-helper/dist/style.css'
 import { headers } from 'next/headers'
+import Script from 'next/script'
 
 export default async function RootLayout({
 	children,
@@ -11,23 +12,30 @@ export default async function RootLayout({
 	children: React.ReactNode
 }>) {
 	const projectData = await getProjectData()
-	const { hideCreatedWithNotice } = projectData?.project || {}
+	const { hideCreatedWithNotice, headCode } = projectData?.project || {}
 
 	return (
 		<html lang="en">
+			<head>
+				<Script id="custom-code-script" strategy="afterInteractive">
+					{`window.__CUSTOM_CODE__ = ${JSON.stringify(headCode)};`}
+				</Script>
+			</head>
+
 			<body>
 				<Providers>
 					<Navbar meta={projectData?.metadata} />
 					{children}
 					<NoticeLabel shouldHide={hideCreatedWithNotice} />
 				</Providers>
+				<CustomCodeInjector />
 			</body>
 		</html>
 	)
 }
 
 async function getProjectData() {
-	const projectId = extractProjectID(headers())
+	const projectId = extractProjectID(headers(), { target: null })
 
 	if (!projectId) return null
 
